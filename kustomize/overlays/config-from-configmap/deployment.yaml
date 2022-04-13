@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gce-metadata-simulator
+spec:
+  selector:
+    matchLabels:
+      app: gce-metadata-simulator
+  template:
+    metadata:
+      labels:
+        app: gce-metadata-simulator
+    spec:
+      containers:
+        - name: gce-metadata-simulator
+          env:
+            - name: GCE_METADATA_SIMULATOR_SETTINGS_FILE
+              value: /config/custom_settings.py
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          configMap:
+            name: simulator-config
